@@ -10,6 +10,11 @@ module TrophyWall
     def initialize(token, host='localhost:3000')
       @token = token
       @host = host
+      login
+    end
+    
+    def login
+      puts get('/start')
     end
   
     def user_ladder

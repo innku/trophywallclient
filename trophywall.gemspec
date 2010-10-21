@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
      "lib/trophywall/client.rb",
      "lib/trophywall/railtie.rb",
      "test/helper.rb",
-     "test/test_trophywall.rb"
+     "test/test_trophywall.rb",
+     "trophywall.gemspec"
   ]
   s.homepage = %q{http://github.com/innku/trophywallclient}
   s.rdoc_options = ["--charset=UTF-8"]
