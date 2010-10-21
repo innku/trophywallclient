@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "trophywall"
-    gem.summary = %Q{TODO: Logs your actions into trophywall}
-    gem.description = %Q{TODO: Logs your actions into trophywall}}
+    gem.summary = %Q{Logs your actions into trophywall}
+    gem.description = %Q{Logs your actions into trophywall}
     gem.email = "adrian@innku.com"
     gem.homepage = "http://github.com/innku/trophywallclient"
     gem.authors = ["Adrian Cuadros", "Eduardo Moreno"]

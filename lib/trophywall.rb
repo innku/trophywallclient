@@ -7,8 +7,8 @@ module TrophyWall
   end
   
   if defined?(Rails)
-    require 'trophywall/client'
     require 'trophywall/railtie'
+    require 'trophywall/client'
   end
   
 end
