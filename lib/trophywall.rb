@@ -3,7 +3,7 @@ module TrophyWall
   mattr_accessor :app_token
   @@app_token = nil
   
-  @@app_token = nil
+  @@app = nil
   
   def self.setup
     yield self
@@ -11,7 +11,11 @@ module TrophyWall
   end
   
   def self.login
-    @app = TrophyWall::Client.new(@@app_token)
+    @@app = TrophyWall::Client.new(@@app_token)
+  end
+  
+  def self.app
+    @@app
   end
   
   if defined?(Rails)

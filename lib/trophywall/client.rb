@@ -14,14 +14,20 @@ module TrophyWall
     end
     
     def login
-      puts get('/start')
+      begin
+        puts get('/start')
+      rescue Errno::ECONNREFUSED
+        puts 'TrophyWall: Connection could not be established'
+      rescue RestClient::Unauthorized
+        puts 'TrophyWall: Your token is invalid, actions will not be logged'
+      end
     end
   
     def user_ladder
       JSON.parse(get('/users.json').body)
     end
   
-    def log(action, user, params={})
+    def hit(action, user, params={})
       post('/user_actions', {:user_action => {:action_name => action, 
                                               :user_params => {:id => user.id, 
                                                                :display_name => user.to_s},
