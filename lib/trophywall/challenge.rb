@@ -3,7 +3,7 @@ module TrophyWall
     
     def self.included(base)
       base.send :extend, ClassMethods
-      ClassMethods.hit_on_create
+      base.send :hit_on_create
     end
     
     module ClassMethods
@@ -13,7 +13,7 @@ module TrophyWall
           TrophyWall.app.hit(action_name(self.class), self.user)
         end
       end
-      
+            
     end
     
     def action_name(class_reference)

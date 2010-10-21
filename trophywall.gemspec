@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/trophywall.rb",
+     "lib/trophywall/challenge.rb",
      "lib/trophywall/client.rb",
      "lib/trophywall/railtie.rb",
      "test/helper.rb",

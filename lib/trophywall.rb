@@ -21,6 +21,7 @@ module TrophyWall
   if defined?(Rails)
     require 'trophywall/client'
     require 'trophywall/railtie'
+    require 'trophywall/challenge'
   end
   
 end
