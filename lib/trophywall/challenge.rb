@@ -38,7 +38,7 @@ module TrophyWall
       def trophywall_hit_on_create
         after_create do |record|
           if challenging_for_trophywall?
-            trophywall_hit(create_challenge_name)
+            trophywall_hit(create_challenge_name_for_trophywall)
           end
         end
       end
@@ -48,13 +48,31 @@ module TrophyWall
     module InstanceMethods
       
       def trophywall_hit(action, user=nil)
-        user ||= challenger
-        TrophyWall.app.hit(action, challenger)
+        user ||= trophywall_challenger
+        teams = trophywall_challenger_teams_for(user)
+        TrophyWall.app.hit(action, user.id, user.to_s, :teams => teams)
       end
       
       private
       
-      def challenger
+      def trophywall_challenger_teams_for(user)
+        if user.class.respond_to? :trophywall_teams
+          user.class.send(:trophywall_teams).collect do |team_name|
+            team = user.send(team_name)
+            trophywall_formatted_team_name(team)
+          end
+        end
+      end
+      
+      def trophywall_formatted_team_name(team)
+        if team.is_a?(String)
+          {:display_name => team}
+        else
+          {:id => team.id, :display_name => team.to_s}
+        end
+      end
+      
+      def trophywall_challenger
         if self.class.respond_to? :trophywall_challenger
           self.send self.class.trophywall_challenger
         else
@@ -62,7 +80,7 @@ module TrophyWall
         end
       end
       
-      def create_challenge_name
+      def create_challenge_name_for_trophywall
         if self.class.respond_to? :trophywall_challenge_name
           self.class.trophywall_challenge_name
         else
@@ -71,10 +89,10 @@ module TrophyWall
       end
 
       def trophywall_action_name(action)
-        "#{action}-#{formatted_class_name}"
+        "#{action}-#{trophywall_formatted_class_name}"
       end
       
-      def formatted_class_name
+      def trophywall_formatted_class_name
         self.class.name.tableize.dasherize
       end
       

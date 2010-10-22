@@ -36,6 +36,7 @@ module TrophyWall
     require 'trophywall/client'
     require 'trophywall/railtie'
     require 'trophywall/challenge'
+    require 'trophywall/challenger'
   end
   
 end

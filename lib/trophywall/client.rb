@@ -27,11 +27,12 @@ module TrophyWall
       JSON.parse(get('/users.json').body)
     end
   
-    def hit(action, user, params={})
+    def hit(action, user_id, user_display_name, params={})
       post('/user_actions', {:user_action => {:action_name => action, 
-                                              :user_params => {:id => user.id, 
-                                                               :display_name => user.to_s},
-                                              :created_at => params[:created_at] }})
+                                              :user_params => {:id => user_id, 
+                                                               :display_name => user_display_name},
+                                              :teams => params[:team],
+                                              :created_at =>  params[:created_at] }})
     end
   
     def resource(uri)
