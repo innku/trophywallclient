@@ -9,7 +9,7 @@ module TrophyWall
     
     module ClassMethods
       
-      def challenge_name(name)
+      def challenge(name)
         self.cattr_accessor :trophywall_challenge_name
         self.trophywall_challenge_name = name.to_s
       end
@@ -22,6 +22,15 @@ module TrophyWall
       def not_challenging_for_trophywall
         self.cattr_accessor :challenging_for_trophywall
         self.challenging_for_trophywall = false
+      end
+      
+      def challenge_on(action, params={})
+        challenge = params[:challenge] || "#{action}-#{formatted_class_name}"
+        self.send "after_#{action}" do |record|
+          if (block_given? && yield(record)) || !block_given?
+            trophywall_hit(challenge, params[:challenger])
+          end
+        end
       end
             
       private
@@ -39,6 +48,7 @@ module TrophyWall
     module InstanceMethods
       
       def trophywall_hit(action, user=nil)
+        user ||= challenger
         TrophyWall.app.hit(action, challenger)
       end
       
@@ -61,7 +71,11 @@ module TrophyWall
       end
 
       def trophywall_action_name(action)
-        "#{action}-#{self.class.name.downcase}"
+        "#{action}-#{formatted_class_name}"
+      end
+      
+      def formatted_class_name
+        self.class.name.tableize.dasherize
       end
       
       def challenging_for_trophywall?

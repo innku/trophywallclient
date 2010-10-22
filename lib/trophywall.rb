@@ -7,7 +7,7 @@ module TrophyWall
   @@user_class = 'User'
   
   mattr_accessor :log_everything
-  @@user_class = false
+  @@log_everything = false
   
   @@app = nil
   
