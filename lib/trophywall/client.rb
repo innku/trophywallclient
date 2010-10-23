@@ -28,10 +28,10 @@ module TrophyWall
     end
   
     def hit(action, user_id, user_display_name, params={})
-      post('/user_actions', {:user_action => {:action_name => action, 
-                                              :user_params => {:id => user_id, 
-                                                               :display_name => user_display_name},
-                                              :teams => params[:team],
+      post('/user_actions', {:user_action => {:challenge =>   {:name => action}, 
+                                              :challenger =>  {:id => user_id, 
+                                                               :name => user_display_name,
+                                                               :teams => params[:team]},
                                               :created_at =>  params[:created_at] }})
     end
   

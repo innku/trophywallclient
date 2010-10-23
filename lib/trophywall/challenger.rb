@@ -2,17 +2,22 @@ module TrophyWall
   module Challenger
     def self.included(base)
       base.send :extend, ClassMethods
+      base.send :define_class_variable
     end
     
     module ClassMethods
       
-      def team(*team_names)
-        teams(team_names)
+      def define_class_variable
+        self.cattr_accessor :trophywall_teams
+        self.trophywall_teams = {}
       end
       
-      def teams(*team_names)
-        self.cattr_accessor :trophywall_teams
-        self.trophywall_teams = team_names.flatten
+      def team(calling_name, params={})
+        team_category = params[:name] || calling_name
+        self.trophywall_teams[team_category] = {}
+        self.trophywall_teams[team_category][:name] = calling_name.to_s
+        self.trophywall_teams[team_category][:id] = params[:id] || 'id'
+        self.trophywall_teams[team_category][:display] = params[:display] || 'to_s'
       end
       
     end
