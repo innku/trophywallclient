@@ -31,8 +31,8 @@ module TrophyWall
       post('/user_actions', {:user_action => {:challenge =>   {:name => action}, 
                                               :challenger =>  {:id => user_id, 
                                                                :name => user_display_name,
-                                                               :teams => params[:team]},
-                                              :created_at =>  params[:created_at] }})
+                                                               :teams => params[:teams]},
+                                              :created_at =>  params[:timestamp] }})
     end
   
     def resource(uri)
