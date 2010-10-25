@@ -56,7 +56,7 @@ module TrophyWall
       
       def trophywall_team_id(team, id_call)
         unless id_call.blank?
-          if team.is_a?(ActiveRecord::Base) and !team.new_record?
+          if team.is_a?(ActiveRecord::Base) and !team.new_record? #TODO => Refactor for not only active record
             team.send id_call
           end
         end
