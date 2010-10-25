@@ -2,7 +2,7 @@ module TrophyWall
   module Challenger
     def self.included(base)
       base.send :extend, ClassMethods
-      base.send :extend, InstanceMethods
+      base.send :include, InstanceMethods
       base.send :define_class_variable
     end
     
@@ -17,28 +17,25 @@ module TrophyWall
         team_category = params[:name] || calling_name
         self.trophywall_teams[team_category] = {}
         self.trophywall_teams[team_category][:calling_name] = calling_name.to_s
-        self.trophywall_teams[team_category][:id] = params[:id].to_s || 'id'
-        self.trophywall_teams[team_category][:display] = params[:display].to_s || 'to_s'
+        self.trophywall_teams[team_category][:id] = (params[:id].nil? ? 'id' : params[:id].to_s)
+        self.trophywall_teams[team_category][:display] = (params[:display].nil? ? 'to_s' : params[:display].to_s)
       end
       
     end
     
     module InstanceMethods
-       
-      def trophywall_teams
-        @teams ||= get_trophywall_teams
-        @teams
-      end
       
+      protected
+       
       def get_trophywall_teams
-        @teams = {}
+        teams = {}
         team_specs = self.class.send(:trophywall_teams)
-        debugger
         team_specs.keys.each do |team_calling|
-          @teams[team_calling] = trophywall_formatted_team_name(trophywall_team(team_calling),
+          teams[team_calling] = trophywall_formatted_team_name(trophywall_team(team_calling),
                                                                 team_specs[team_calling])
+          teams.delete(team_calling) if teams[team_calling].nil?
         end
-        @teams
+        teams
       end
       
       def trophywall_formatted_team_name(team, team_hash)
@@ -60,7 +57,7 @@ module TrophyWall
       def trophywall_team_id(team, id_call)
         unless id_call.blank?
           if team.is_a?(ActiveRecord::Base) and !team.new_record?
-            team.id
+            team.send id_call
           end
         end
       end

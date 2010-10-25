@@ -58,11 +58,11 @@ module TrophyWall
                                                        :timestamp => call_trophywall_timestamp)
       end
       
-      # private
+      private
       
       def challenger_teams_for(user)
         if user.class.respond_to? :trophywall_teams
-          user.trophywall_teams
+          user.get_trophywall_teams
         end
       end
       
