@@ -54,46 +54,15 @@ module TrophyWall
       
       def trophywall_hit(action, user=nil)
         user ||= trophywall_challenger
-        teams = trophywall_challenger_teams_for(user)
-        TrophyWall.app.hit(action, user.id, user.to_s, :teams => teams, :timestamp => call_trophywall_timestamp)
+        TrophyWall.app.hit(action, user.id, user.to_s, :teams => challenger_teams_for(user), 
+                                                       :timestamp => call_trophywall_timestamp)
       end
       
       # private
       
-      def trophywall_challenger_teams_for(user)
+      def challenger_teams_for(user)
         if user.class.respond_to? :trophywall_teams
-          teams = {}
-          team_specs = user.class.send(:trophywall_teams)
-          team_specs.keys.each do |team_calling|
-            teams[team_calling] = trophywall_formatted_team_name_for(user, 
-                                                                     team_specs[team_calling],
-                                                                     team_calling)
-          end
-          teams
-        end
-      end
-      
-      def trophywall_formatted_team_name_for(user, team_hash, team_calling)
-        { :id => trophywall_challenger_attribute(user, team_hash[:id]), 
-          :name => trophywall_challenger_team_name_for(user, team_hash).to_s }
-      end
-      
-      def trophywall_challenger_team_name_for(user, team_hash={})
-        team = trophywall_challenger_attribute(user, team_hash[:calling_name])
-        if team_hash[:display].blank?
-          team.to_s
-        else
-          if team.respond_to? team_hash[:display].to_s
-            team.send team_hash[:display]
-          else
-            team.to_s
-          end
-        end
-      end
-      
-      def trophywall_challenger_attribute(user, att)
-        if user.respond_to? att.to_s
-          user.send att
+          user.trophywall_teams
         end
       end
       
