@@ -54,8 +54,10 @@ module TrophyWall
       
       def trophywall_hit(action, user=nil)
         user ||= trophywall_challenger
-        TrophyWall.app.hit(action, user.id, user.to_s, :teams => challenger_teams_for(user), 
-                                                       :timestamp => call_trophywall_timestamp)
+        if user.is_a?(ActiveRecord::Base) and !user.new_record? #FIXME => Refactor for not only active record
+          TrophyWall.app.hit(action, user.id, user.to_s, :teams => challenger_teams_for(user), 
+                                                         :timestamp => call_trophywall_timestamp)
+        end
       end
       
       private
@@ -68,7 +70,7 @@ module TrophyWall
       
       def trophywall_challenger
         if self.class.respond_to? :trophywall_challenger
-          self.send self.class.trophywall_challenger
+          self.send self.cl<ass.trophywall_challenger
         else
           self.send :user
         end
