@@ -31,12 +31,13 @@ module TrophyWall
       post('/user_actions', {:user_action => {:challenge =>   {:name => action}, 
                                               :challenger =>  {:id => user_id, 
                                                                :name => user_display_name,
+                                                               :class => params[:class], 
                                                                :teams => params[:teams]},
                                               :created_at =>  params[:timestamp] }})
     end
   
     def resource(uri)
-       RestClient::Resource.new("http://#{host}", token, 'X')[uri]
+       RestClient::Resource.new("http://#{host}", token, 'I')[uri]
     end
 
     def get(uri, extra_headers={})

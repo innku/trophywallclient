@@ -41,7 +41,14 @@ module TrophyWall
       def trophywall_formatted_team_name(team, team_hash)
         unless team.nil?
           { :id => trophywall_team_id(team, team_hash[:id]), 
-            :name => trophywall_team_name(team, team_hash[:display]).to_s }
+            :name => trophywall_team_name(team, team_hash[:display]),
+            :class => trophywall_team_class(team) }
+        end
+      end
+      
+      def trophywall_team_class(team)
+        if team.is_a?(ActiveRecord::Base)
+          team.class.to_s
         end
       end
       

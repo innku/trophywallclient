@@ -54,8 +54,9 @@ module TrophyWall
       
       def trophywall_hit(action, user=nil)
         user ||= trophywall_challenger
-        if user.is_a?(ActiveRecord::Base) and !user.new_record? #TODO => Refactor for not only active record
-          TrophyWall.app.hit(action, user.id, user.to_s, :teams => challenger_teams_for(user), 
+        if user.is_a?(ActiveRecord::Base) and !user.new_record? #TODO => Allow not only ActiveRecord
+          TrophyWall.app.hit(action, user.id, user.to_s, :teams => challenger_teams_for(user),
+                                                         :class => user.class.to_s,
                                                          :timestamp => call_trophywall_timestamp)
         end
       end
